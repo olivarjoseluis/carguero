@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import type { BodyType, PublicDriver, Zone } from "@/lib/types";
 import { BODY_TYPES } from "@/lib/types";
 import { formatKg, formatRating, plural, vehicleLabel } from "@/lib/format";
@@ -38,6 +39,9 @@ export function Finder({ zones, drivers, demo }: { zones: Zone[]; drivers: Publi
   const sel = list.find((d) => d.id === selId) ?? null;
   const place = zone ? `${zoneName(zone)}, ${cityName}` : cityName;
   const n = list.length;
+  // Sin filtros y sin resultados = la ciudad todavía no tiene conductores (lanzamiento)
+  const filtered = Boolean(zone) || type !== "all";
+  const launching = n === 0 && !filtered;
 
   // Proyección simple lat/lng → % dentro del recuadro de la ciudad
   const bounds = useMemo(() => {
@@ -129,7 +133,7 @@ export function Finder({ zones, drivers, demo }: { zones: Zone[]; drivers: Publi
             <div className="absolute left-5 right-5 top-5 flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-[15px] font-semibold text-black shadow-[0_8px_24px_rgba(0,0,0,0.25)]" aria-live="polite">
                 <span className="h-2 w-2 rounded-full bg-accent" />
-                <span>{plural(n, "carguero", "cargueros")} en {place}</span>
+                <span>{launching ? `Muy pronto en ${place}` : `${plural(n, "carguero", "cargueros")} en ${place}`}</span>
               </div>
               {demo && <span className="rounded-full bg-white/15 px-3 py-2 text-[13px] font-medium text-white">Perfiles de ejemplo</span>}
             </div>
@@ -178,11 +182,13 @@ export function Finder({ zones, drivers, demo }: { zones: Zone[]; drivers: Publi
             <div className="flex flex-col gap-2.5">
               <h2 className="m-0 font-display text-[clamp(32px,3.6vw,44px)] font-bold leading-[1.1] tracking-[-0.025em]">Cargueros en {place}</h2>
               <p className="m-0 text-[17px] text-muted">
-                {n > 0 ? `${plural(n, "conductor disponible", "conductores disponibles")}.` : "Sin resultados con estos filtros."}
+                {n > 0
+                  ? `${plural(n, "conductor disponible", "conductores disponibles")}.`
+                  : launching ? "Aún no hay conductores publicados." : "Sin resultados con estos filtros."}
                 {demo && n > 0 ? " Perfiles de ejemplo." : ""}
               </p>
             </div>
-            <div role="group" aria-label="Ordenar" className="flex gap-2 rounded-full bg-chip p-1">
+            <div role="group" aria-label="Ordenar" className={`gap-2 rounded-full bg-chip p-1 ${n > 1 ? "flex" : "hidden"}`}>
               {([["rating", "Mejor valorados"], ["reviews", "Más reseñas"]] as const).map(([id, label]) => (
                 <button
                   key={id} type="button" aria-pressed={sort === id} onClick={() => setSort(id)}
@@ -230,8 +236,18 @@ export function Finder({ zones, drivers, demo }: { zones: Zone[]; drivers: Publi
                 </article>
               ))}
             </div>
+          ) : launching ? (
+            <div className="flex flex-col items-center gap-4 rounded-[20px] bg-paper px-6 py-12 text-center sm:px-8">
+              <h3 className="m-0 font-display text-[26px] font-bold tracking-[-0.02em]">Carguero está arrancando en {cityName}</h3>
+              <p className="m-0 max-w-[460px] text-base leading-normal text-muted">
+                Estamos sumando a los primeros conductores. ¿Tienes motocarro? Registra tu perfil gratis y sé de los primeros en aparecer cuando los vecinos busquen.
+              </p>
+              <Link href="/registro" className="inline-flex h-12 items-center rounded-full bg-accent px-[22px] text-[15px] font-bold text-black no-underline">
+                Registra tu carguero gratis
+              </Link>
+            </div>
           ) : (
-            <div className="flex flex-col items-center gap-4 rounded-[20px] bg-paper px-8 py-12 text-center">
+            <div className="flex flex-col items-center gap-4 rounded-[20px] bg-paper px-6 py-12 text-center sm:px-8">
               <h3 className="m-0 font-display text-[26px] font-bold tracking-[-0.02em]">Aún no hay cargueros en este sector</h3>
               <p className="m-0 max-w-[460px] text-base leading-normal text-muted">
                 Prueba con toda la ciudad o con otro tipo de carrocería. ¿Conoces a un conductor de la zona? Invítalo a registrarse gratis.
