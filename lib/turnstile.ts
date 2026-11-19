@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 // - Sin NEXT_PUBLIC_TURNSTILE_SITE_KEY la app corre sin Turnstile (modo demo / desarrollo).
 // - Con sitekey, falla cerrado: sin secret, sin hostnames o con cualquier error, rechaza.
 
-export type TurnstileAction = "review" | "signup";
+export type TurnstileAction = "review" | "signup" | "admin";
 
 const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 const expectedHostnames = new Set(

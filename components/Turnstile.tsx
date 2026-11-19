@@ -19,7 +19,7 @@ export const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? 
 export type TurnstileHandle = { reset: () => void };
 
 export function Turnstile({ action, onToken, ref }: {
-  action: "review" | "signup";
+  action: "review" | "signup" | "admin";
   onToken: (token: string) => void;
   ref?: Ref<TurnstileHandle>;
 }) {

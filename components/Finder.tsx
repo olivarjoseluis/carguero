@@ -16,7 +16,7 @@ const CITIES = [
 
 /** Hero con selector + mapa, y la sección de resultados. Comparten el estado de filtros. */
 export function Finder({ zones, drivers, demo }: { zones: Zone[]; drivers: PublicDriver[]; demo: boolean }) {
-  const [city, setCity] = useState("cali");
+  const [city, setCity] = useState("jamundi");
   const [zone, setZone] = useState("");
   const [type, setType] = useState<BodyType | "all">("all");
   const [sort, setSort] = useState<Sort>("rating");

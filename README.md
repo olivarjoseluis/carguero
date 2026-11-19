@@ -10,6 +10,7 @@ Directorio de motocarros y cargueros en Cali y Jamundí. Hecho con Next.js 16 (A
 | `/registro` | Registro de propietarios en 4 pasos con vista previa del perfil |
 | `/c/[id]` | Registra el contacto, guarda la cookie de "¿Cómo te fue?" y redirige a WhatsApp. El número nunca llega al HTML |
 | `/r/[token]` | Reseña verificada: un solo uso, vence a los 14 días |
+| `/admin` | Panel con contraseña para aprobar, rechazar o devolver a pendiente los registros |
 | `/privacidad`, `/terminos` | Borradores legales (complétalos antes de lanzar) |
 
 ## 1. Correr en modo demo (sin Supabase)
@@ -33,7 +34,9 @@ Abre http://localhost:3000. Sin variables de entorno la app usa datos de ejemplo
 
 ## 3. Operación diaria
 
-Aprobar un conductor nuevo (en SQL Editor):
+Aprobar o rechazar conductores: entra a `/admin` con la contraseña de `ADMIN_PASSWORD` (mínimo 12 caracteres; sin ella el panel queda deshabilitado). Ahí ves los registros pendientes con sus datos, documentos y fotos, y los apruebas, rechazas o devuelves a pendiente. La sesión dura 12 horas y cambiar `ADMIN_PASSWORD` cierra todas las sesiones.
+
+También se puede en SQL Editor:
 
 ```sql
 select id, first_name, last_name, whatsapp, created_at from drivers where status = 'pending';
@@ -73,7 +76,6 @@ En Vercel: importa el repositorio, agrega las mismas variables de `.env.local` y
 ## Pendientes sugeridos
 
 - Panel del conductor con inicio de sesión (Supabase Auth) y botón "Pedir reseña".
-- Panel de administración para aprobar perfiles sin usar SQL.
 - Páginas por barrio (`/acarreos/[ciudad]/[barrio]`) para SEO.
 - Mapa real con Leaflet + OpenStreetMap en lugar del mapa estilizado.
 - Usar fotos propias en lugar de `public/motocarro.png`, que muestra el logo de un fabricante.
