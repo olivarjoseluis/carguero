@@ -71,7 +71,7 @@ El link para que un conductor pida reseña es `https://TU-DOMINIO/r/<token>`. El
 
 ## Desplegar
 
-En Vercel: importa el repositorio, agrega las mismas variables de `.env.local` y despliega. Excepción: en Vercel, `TURNSTILE_HOSTNAMES` debe ser `carguero.vercel.app` (sin `localhost`). Si cambias de dominio, agrégalo también al widget en Cloudflare. El plan Hobby de Vercel no permite uso comercial: cuando empieces a cobrar destacados o patrocinios, pasa a un plan pago.
+En Vercel: importa el repositorio, agrega las mismas variables de `.env.local` y despliega. Excepción: en Vercel, `TURNSTILE_HOSTNAMES` debe ser `carguero.vercel.app` (sin `localhost`). Tampoco copies `NEXT_PUBLIC_SITE_URL=http://localhost:3000`: ponla como `https://carguero.vercel.app` o bórrala (sin ella se usa el dominio de producción de Vercel). Las tarjetas para redes sociales (`app/opengraph-image.tsx` y `app/registro/opengraph-image.tsx`) usan esa URL para la imagen. Si cambias de dominio, agrégalo también al widget en Cloudflare. El plan Hobby de Vercel no permite uso comercial: cuando empieces a cobrar destacados o patrocinios, pasa a un plan pago.
 
 ## Pendientes sugeridos
 

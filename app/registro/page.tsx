@@ -8,6 +8,14 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Registra tu carguero gratis · Carguero",
   description: "Crea gratis el perfil de tu motocarro en Cali o Jamundí y recibe clientes de tu zona por WhatsApp. Sin comisiones.",
+  openGraph: {
+    type: "website",
+    locale: "es_CO",
+    siteName: "Carguero",
+    url: "/registro",
+    title: "Registra tu motocarro gratis · Carguero",
+    description: "Recibe clientes de tu zona por WhatsApp. Registro en 5 minutos, sin comisiones.",
+  },
 };
 
 export default async function RegistroPage() {
